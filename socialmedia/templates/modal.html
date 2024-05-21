@@ -1,0 +1,74 @@
+{% load static %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Nueva publicación</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form action="upload" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <img src="{% static 'css/upload.png' %}" alt="" class="m-1">
+                        <label for="image-upload" class="col-form-label">Imagen</label>
+                        <input type="file" name="image_upload" class="form-control" id="image-upload">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Contenido</label>
+                        <textarea class="form-control" name="caption" placeholder="Escribe tu contenido..." id="message-text"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="col-form-label">Categoría</label>
+                        <select class="form-control" name="category" id="category" onchange="actualizarSubcategorias()">
+                            <option value="">Selecciona una categoría</option>
+                            <option value="rescate">Rescate</option>
+                            <option value="pregunta">Pregunta</option>
+                            <option value="consejo">Consejo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="subcategoria-animal" style="display: none;">
+                        <label for="animal" class="col-form-label">Animal</label>
+                        <select class="form-control" name="animal" id="animal">
+                            <option value="perro">Perro</option>
+                            <option value="gato">Gato</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="subcategoria-consejo" style="display: none;">
+                        <label for="consejo" class="col-form-label">Consejo</label>
+                        <select class="form-control" name="consejo" id="consejo">
+                            <option value="alimentacion">Alimentación</option>
+                            <option value="ejercicio">Ejercicio</option>
+                            <option value="veterinaria">Atención veterinaria</option>
+                            <option value="higiene">Higiene y cuidado</option>
+                            <option value="entrenamiento">Entrenamiento y socialización</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Publicar</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function actualizarSubcategorias() {
+        var categoria = document.getElementById("category").value;
+        var subAnimal = document.getElementById("subcategoria-animal");
+        var subConsejo = document.getElementById("subcategoria-consejo");
+
+        if (categoria === "rescate" || categoria === "pregunta") {
+            subAnimal.style.display = "block";
+            subConsejo.style.display = "none";
+        } else if (categoria === "consejo") {
+            subAnimal.style.display = "block";
+            subConsejo.style.display = "block";
+        } else {
+            subAnimal.style.display = "none";
+            subConsejo.style.display = "none";
+        }
+    }
+</script>
